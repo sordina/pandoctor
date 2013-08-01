@@ -22,8 +22,8 @@ comeIn command input namevals = do
   (hin,hout,herr,_pid) <- runInteractiveCommand (foo ++ " " ++ command ++ " " ++ foo)
   hSetBuffering hin NoBuffering
   hPutStrLn hin input
-  hGetContents hout >>= putStr
-  hGetContents herr >>= putStrLn
+  hGetContents hout >>= hPutStr stdout
+  hGetContents herr >>= hPutStr stderr
 
 equalize :: ([Char], [Char]) -> [Char]
 equalize (x,y) = map underscore x ++ "=" ++ y

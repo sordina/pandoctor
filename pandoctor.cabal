@@ -15,4 +15,5 @@ cabal-version:       >=1.8
 
 executable pandoctor
   main-is: pandoctor.hs
-  build-depends:       base ==4.6.*, process >= 1.1, pandoc >= 1.11
+  build-depends: base ==4.6.*, process >= 1.1, pandoc >= 1.11
+  ghc-options: -threaded

@@ -10,7 +10,7 @@ import System.Posix.Env
 
 main :: IO ()
 main = do
-  counterIO <- newIORef 1
+  counterIO <- newIORef 0
   getContents >>= return . readMarkdown def >>= bottomUpM (process counterIO) >> return ()
 
 process :: (IORef Int) -> Block -> IO Block

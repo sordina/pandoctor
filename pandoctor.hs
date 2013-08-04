@@ -7,6 +7,7 @@ import System.IO
 import Data.Char
 import Data.IORef
 import System.Posix.Env
+import Control.Arrow
 
 main :: IO ()
 main = do
@@ -23,10 +24,12 @@ process _ x = return x
 
 comeIn :: IORef Int -> String -> String -> [(String,String)] -> IO String
 comeIn counterIO command input namevals = do
-  let foo = unwords (map equalize namevals)
   count <- readIORef counterIO
-  setEnv "PANDOCTOR_COUNT" (show count) True
-  (hin,hout,herr,_pid) <- runInteractiveCommand (foo ++ " " ++ command ++ " " ++ foo)
+  let withCount  = ("PANDOCTOR_COUNT", show count) : namevals
+      fixedNames = map (first (map underscore)) withCount
+      pairs      = map equalize fixedNames
+  mapM_ putEnv pairs
+  (hin,hout,herr,_pid) <- runInteractiveProcess command pairs Nothing Nothing
   hSetBuffering hin NoBuffering
   hPutStrLn hin input
   out    <- hGetContents hout
@@ -36,7 +39,7 @@ comeIn counterIO command input namevals = do
   return (out ++ "\n" ++ outErr)
 
 equalize :: ([Char], [Char]) -> [Char]
-equalize (x,y) = map underscore x ++ "=" ++ y
+equalize (x,y) = x ++ "=" ++ y
 
 underscore :: Char -> Char
 underscore x | isAlpha x = x

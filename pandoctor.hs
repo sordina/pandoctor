@@ -9,10 +9,13 @@ import Data.IORef
 import System.Posix.Env
 import Control.Arrow
 
+writerOptions :: WriterOptions
+writerOptions = def { writerHTMLMathMethod = WebTeX "http://chart.apis.google.com/chart?cht=tx&chl=" }
+
 main :: IO ()
 main = do counter <- newIORef 0
           getContents >>= return . readMarkdown def
-                      >>= bottomUpM (process counter) >>= putStrLn . writeHtmlString def
+                      >>= bottomUpM (process counter) >>= putStrLn . writeHtmlString writerOptions
 
 process :: (IORef Int) -> Block -> IO Block
 process counter cb@(CodeBlock trip@(_id, _classes, namevals) contents) = do

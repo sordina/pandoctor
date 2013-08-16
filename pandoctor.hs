@@ -12,7 +12,7 @@ import Control.Arrow
 main :: IO ()
 main = do counter <- newIORef 0
           getContents >>= return . readMarkdown def
-                      >>= bottomUpM (process counter) >> return ()
+                      >>= bottomUpM (process counter) >>= putStrLn . writeHtmlString def
 
 process :: (IORef Int) -> Block -> IO Block
 process counter cb@(CodeBlock trip@(_id, _classes, namevals) contents) = do
@@ -39,10 +39,9 @@ comeIn counter command input namevals = do
   out    <- hGetContents hout
   outErr <- hGetContents herr
 
-  putStr out
-  putStr outErr
+  hPutStr stderr outErr
 
-  return (out ++ "\n" ++ outErr)
+  return out
 
 equalize :: ([Char], [Char]) -> [Char]
 equalize (x,y) = x ++ "=" ++ y

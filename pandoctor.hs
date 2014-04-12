@@ -34,13 +34,14 @@ comeIn counter command input namevals = do
 
   mapM_ putEnv pairs
 
-  (hin,hout,herr,_pid) <- runInteractiveProcess command pairs Nothing Nothing
+  (hin,hout,herr,pid) <- runInteractiveProcess command pairs Nothing Nothing
 
   hPutStrLn hin input
   hClose hin
 
   out    <- hGetContents hout
   outErr <- hGetContents herr
+  _      <- waitForProcess pid
 
   hPutStr stderr outErr
 

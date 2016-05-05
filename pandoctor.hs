@@ -2,6 +2,7 @@
 {-# LANGUAGE NoMonomorphismRestriction #-}
 
 import Text.Pandoc
+import Text.Pandoc.Error
 import System.Process
 import System.IO
 import Data.Char
@@ -15,7 +16,7 @@ writerOptions = def { writerHTMLMathMethod = WebTeX "http://chart.apis.google.co
 main :: IO ()
 main = do counter <- newIORef 0
           getContents >>= return . readMarkdown def
-                      >>= bottomUpM (process counter) >>= putStrLn . writeHtmlString writerOptions
+                      >>= bottomUpM (process counter) . handleError >>= putStrLn . writeHtmlString writerOptions
 
 process :: (IORef Int) -> Block -> IO Block
 process counter cb@(CodeBlock trip@(_id, _classes, namevals) contents) = do

@@ -8,25 +8,21 @@ Example Markdown:
 
 For example, if you wanted to render a graph with graphviz...
 
-```
+    ## Graphs
 
-## Graphs
+    Here is a cool graph:
 
-Here is a cool graph:
-
-~~~{data-filter=./resources/scripts/graph.sh data-output=resources/images/graphs/n1.png .hidden}
-digraph {
-  rankdir=LR;
-  a; b; c; d; e; f; g; h; i;
-  a -> d; a -> e;
-  b -> d; b -> e;
-  c -> d; c -> e;
-  d -> f; d -> g; d -> h; d -> i;
-  e -> f; e -> g; e -> h; e -> i;
-}
-\~~~
-
-```
+    ~~~{data-filter=./resources/scripts/graph.sh data-output=resources/images/graphs/n1.png .hidden}
+    digraph {
+      rankdir=LR;
+      a; b; c; d; e; f; g; h; i;
+      a -> d; a -> e;
+      b -> d; b -> e;
+      c -> d; c -> e;
+      d -> f; d -> g; d -> h; d -> i;
+      e -> f; e -> g; e -> h; e -> i;
+    }
+    ~~~
 
 Usage:
 

@@ -24,6 +24,8 @@ For example, if you wanted to render a graph with graphviz...
     }
     ~~~
 
+    ![](resources/images/graphs/n1.png)
+
 Usage:
 
     > pandoctor < some_markdown.md

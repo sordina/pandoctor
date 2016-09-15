@@ -9,13 +9,17 @@ import Data.Char
 import Data.IORef
 import System.Posix.Env
 import Control.Arrow
+import qualified Data.Set as S
 
 writerOptions :: WriterOptions
-writerOptions = def { writerHTMLMathMethod = WebTeX "http://chart.apis.google.com/chart?cht=tx&chl=" }
+writerOptions = def { writerHTMLMathMethod = MathJax "" }
+
+readerOptions :: ReaderOptions
+readerOptions = def { readerExtensions = foldr S.insert (readerExtensions def) [Ext_emoji] }
 
 main :: IO ()
 main = do counter <- newIORef 0
-          getContents >>= return . readMarkdown def
+          getContents >>= return . readMarkdown readerOptions
                       >>= bottomUpM (process counter) . handleError >>= putStrLn . writeHtmlString writerOptions
 
 process :: (IORef Int) -> Block -> IO Block

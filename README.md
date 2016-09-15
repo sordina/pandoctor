@@ -24,7 +24,7 @@ digraph {
   d -> f; d -> g; d -> h; d -> i;
   e -> f; e -> g; e -> h; e -> i;
 }
-~~~
+\~~~
 
 ```
 
